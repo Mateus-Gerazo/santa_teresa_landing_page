@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { ChevronDown, MapPin, UtensilsCrossed } from "lucide-react";
 
@@ -32,8 +33,15 @@ export default function Hero() {
           }`}
       >
         <div className="container mx-auto px-4 sm:px-6 flex justify-between items-center">
-          <div className="text-white font-serif text-lg sm:text-2xl font-bold tracking-wider truncate mr-2">
-            SANTA TERESA
+          <div className="mr-2">
+            <Image
+              src="/images/santa_teresa_logo_branca.png"
+              alt="Santa Teresa Restaurante Logo"
+              width={300}
+              height={100}
+              className="w-auto h-10 sm:h-12 lg:h-14 object-contain"
+              priority
+            />
           </div>
 
           {/* Status Badge */}
