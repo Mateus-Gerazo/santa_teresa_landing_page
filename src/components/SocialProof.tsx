@@ -1,37 +1,38 @@
 "use client";
 
 import { Star, ShieldCheck } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
+import Image from "next/image";
 
-const reviews = [
-  {
-    id: 1,
-    author_name: "Carlos Eduardo",
-    profile_photo_url: "/images/profile-photo.jpg",
-    rating: 5,
-    relative_time_description: "há 2 semanas",
-    text: "Comida excepcional! O ambiente é super charmoso e fomos muito bem atendidos. A coleção de cachaças é um show à parte. Recomendo muito a parmegiana!"
-  },
-  {
-    id: 2,
-    author_name: "Mariana Silva",
-    profile_photo_url: "https://ui-avatars.com/api/?name=Mariana+Silva&background=D4A574&color=fff",
-    rating: 5,
-    relative_time_description: "há 1 mês",
-    text: "Parada obrigatória em Brotas. O risoto de limão siciliano com salmão estava dos deuses. Atendimento rápido e garçons super educados. Com certeza voltaremos."
-  },
-  {
-    id: 3,
-    author_name: "Roberto e Família",
-    profile_photo_url: "https://ui-avatars.com/api/?name=Roberto&background=171717&color=fff",
-    rating: 5,
-    relative_time_description: "há 2 meses",
-    text: "Fomos com nosso cachorro e a experiência foi incrível. Realmente pet-friendly! O espaço é muito gostoso, meia luz à noite, romântico e a comida chegou rápido."
-  }
-];
+type Review = {
+  author_name: string;
+  profile_photo_url: string;
+  rating: number;
+  relative_time_description: string;
+  text: string;
+};
 
 export default function SocialProof() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const res = await fetch('/api/google-places');
+        if (res.ok) {
+          const data = await res.json();
+          setReviews(data.reviews || []);
+        }
+      } catch (error) {
+        console.error("Failed to fetch reviews", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchReviews();
+  }, []);
 
   return (
     <section className="py-24 bg-neutral-900 border-t border-neutral-800">
@@ -50,40 +51,65 @@ export default function SocialProof() {
           ref={scrollContainerRef}
           className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 md:grid md:grid-cols-3 md:gap-8 hide-scrollbar"
         >
-          {reviews.map((review) => (
-            <div
-              key={review.id}
-              className="snap-center shrink-0 w-[85vw] md:w-auto bg-neutral-950 p-8 rounded-3xl border border-neutral-800 flex flex-col shadow-xl"
-            >
-              <div className="flex justify-between items-start mb-6">
-                <div className="flex items-center gap-4">
-                  <img
-                    src={review.profile_photo_url}
-                    alt={review.author_name}
-                    className="w-14 h-14 rounded-full object-cover border-2 border-neutral-800"
-                  />
-                  <div>
-                    <h4 className="text-white font-semibold">{review.author_name}</h4>
-                    <span className="text-neutral-500 text-xs">{review.relative_time_description}</span>
+          {isLoading ? (
+            // Skeleton loaders
+            [1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="snap-center shrink-0 w-[85vw] md:w-auto bg-neutral-950 p-8 rounded-3xl border border-neutral-800 flex flex-col shadow-xl animate-pulse"
+              >
+                <div className="flex items-start gap-4 mb-6">
+                  <div className="w-14 h-14 rounded-full bg-neutral-800 shrink-0"></div>
+                  <div className="space-y-2 flex-1 pt-2">
+                    <div className="h-4 bg-neutral-800 rounded w-1/2"></div>
+                    <div className="h-3 bg-neutral-800 rounded w-1/3"></div>
                   </div>
                 </div>
-                <div className="flex gap-1">
-                  {[...Array(review.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-amber-500 fill-amber-500" />
-                  ))}
+                <div className="space-y-3 flex-grow">
+                  <div className="h-3 bg-neutral-800 rounded w-full"></div>
+                  <div className="h-3 bg-neutral-800 rounded w-full"></div>
+                  <div className="h-3 bg-neutral-800 rounded w-3/4"></div>
                 </div>
               </div>
+            ))
+          ) : (
+            reviews.map((review, index) => (
+              <div
+                key={index}
+                className="snap-center shrink-0 w-[85vw] md:w-auto bg-neutral-950 p-8 rounded-3xl border border-neutral-800 flex flex-col shadow-xl"
+              >
+                <div className="flex justify-between items-start mb-6">
+                  <div className="flex items-center gap-4">
+                    <Image
+                      src={review.profile_photo_url}
+                      alt={review.author_name}
+                      width={56}
+                      height={56}
+                      className="w-14 h-14 rounded-full object-cover border-2 border-neutral-800"
+                    />
+                    <div>
+                      <h4 className="text-white font-semibold">{review.author_name}</h4>
+                      <span className="text-neutral-500 text-xs">{review.relative_time_description}</span>
+                    </div>
+                  </div>
+                  <div className="flex gap-1">
+                    {[...Array(review.rating)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 text-amber-500 fill-amber-500" />
+                    ))}
+                  </div>
+                </div>
 
-              <p className="text-neutral-300 text-sm leading-relaxed italic flex-grow">
-                "{review.text}"
-              </p>
+                <p className="text-neutral-300 text-sm leading-relaxed italic flex-grow">
+                  "{review.text}"
+                </p>
 
-              <div className="mt-6 flex items-center justify-end gap-1 opacity-50">
-                <ShieldCheck size={14} className="text-blue-400" />
-                <span className="text-xs text-neutral-500">Avaliação verificada no Google</span>
+                <div className="mt-6 flex items-center justify-end gap-1 opacity-50">
+                  <ShieldCheck size={14} className="text-blue-400" />
+                  <span className="text-xs text-neutral-500">Avaliação verificada no Google</span>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
 
         <div className="text-center mt-10">

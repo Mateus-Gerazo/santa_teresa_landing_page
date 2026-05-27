@@ -1,4 +1,5 @@
 import { Wine, Home, Dog } from "lucide-react";
+import Image from "next/image";
 
 const experiences = [
   {
@@ -50,10 +51,11 @@ export default function Experience() {
               }`}
             >
               <div className="relative h-56 w-full overflow-hidden">
-                <img 
+                <Image 
                   src={exp.image} 
                   alt={exp.title} 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/20 to-transparent opacity-80" />
                 <div className="absolute bottom-4 left-4 bg-neutral-900/80 backdrop-blur-md p-2 rounded-xl">

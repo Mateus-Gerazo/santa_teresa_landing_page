@@ -1,4 +1,5 @@
 import { UtensilsCrossed, Plus } from "lucide-react";
+import Image from "next/image";
 
 const destaques = [
   {
@@ -56,10 +57,11 @@ export default function MenuHighlights() {
               className="bg-neutral-900 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group cursor-pointer flex flex-col border border-neutral-800 hover:border-amber-600/30"
             >
               <div className="relative h-56 w-full overflow-hidden">
-                <img 
+                <Image 
                   src={prato.imagem} 
                   alt={prato.nome}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  fill
+                  className="object-cover group-hover:scale-110 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 to-transparent opacity-60" />
                 <span className="absolute top-4 right-4 bg-amber-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg z-10">

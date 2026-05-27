@@ -7,8 +7,25 @@ import { ChevronDown, MapPin, UtensilsCrossed } from "lucide-react";
 
 export default function Hero() {
   const [scrolled, setScrolled] = useState(false);
-  // Mock API status
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPlaceStatus = async () => {
+      try {
+        const res = await fetch('/api/google-places');
+        if (res.ok) {
+          const data = await res.json();
+          setIsOpen(data.isOpen);
+        }
+      } catch (error) {
+        console.error("Failed to fetch place data", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchPlaceStatus();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -45,7 +62,9 @@ export default function Hero() {
           </div>
 
           {/* Status Badge */}
-          {isOpen ? (
+          {isLoading ? (
+            <div className="w-24 h-6 sm:w-28 sm:h-8 bg-neutral-800 rounded-full animate-pulse"></div>
+          ) : isOpen ? (
             <span className="flex items-center gap-1.5 sm:gap-2 text-[10px] sm:text-sm bg-green-500/20 text-green-400 px-2 sm:px-3 py-1 rounded-full border border-green-500/30 whitespace-nowrap">
               <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-green-400 animate-pulse"></div>
               Aberto Agora
