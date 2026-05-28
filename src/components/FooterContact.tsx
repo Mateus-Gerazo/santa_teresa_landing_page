@@ -1,4 +1,7 @@
+"use client";
+
 import { MapPin, Clock, Phone } from "lucide-react";
+import { motion } from "framer-motion";
 
 const InstagramIcon = ({ size = 24, className = "" }: { size?: number, className?: string }) => (
   <svg
@@ -21,12 +24,18 @@ const InstagramIcon = ({ size = 24, className = "" }: { size?: number, className
 
 export default function FooterContact() {
   return (
-    <footer id="localizacao" className="bg-neutral-950 text-neutral-300 border-t border-neutral-900 pt-20">
-      <div className="container mx-auto px-6 mb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+    <footer id="localizacao" className="bg-neutral-950 text-neutral-300 border-t border-neutral-900 pt-16 md:pt-20">
+      <div className="container mx-auto px-4 sm:px-6 mb-12 md:mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-24 items-center">
 
           {/* Lado Esquerdo: Mapa */}
-          <div className="w-full h-[350px] md:h-[450px] rounded-3xl overflow-hidden shadow-2xl border border-neutral-800 relative">
+          <motion.div 
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8 }}
+            className="w-full h-[350px] md:h-[450px] rounded-3xl overflow-hidden shadow-2xl border border-neutral-800 relative"
+          >
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d230.7286734603465!2d-48.129266773197784!3d-22.290912019280057!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c779004a573993%3A0xb050a71544bdf394!2sRestaurante%20Santa%20Teresa%20Brotas!5e0!3m2!1spt-BR!2sbr!4v1779747249246!5m2!1spt-BR!2sbr"
               width="100%"
@@ -37,16 +46,37 @@ export default function FooterContact() {
               referrerPolicy="no-referrer-when-downgrade"
               title="Mapa Restaurante Santa Teresa"
             />
-          </div>
+          </motion.div>
 
           {/* Lado Direito: Informações */}
-          <div className="flex flex-col gap-10">
+          <motion.div 
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={{
+              hidden: {},
+              visible: { transition: { staggerChildren: 0.2 } }
+            }}
+            className="flex flex-col gap-10"
+          >
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold text-white font-serif mb-8">
+              <motion.h2 
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+                }}
+                className="text-3xl md:text-4xl font-bold text-white font-serif mb-6 md:mb-8"
+              >
                 Venha nos visitar
-              </h2>
+              </motion.h2>
 
-              <div className="flex gap-4 items-start mb-6 group">
+              <motion.div 
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+                }}
+                className="flex gap-4 items-start mb-6 group"
+              >
                 <div className="mt-1 bg-neutral-900 p-3 rounded-xl border border-neutral-800 group-hover:border-amber-600/50 transition-colors">
                   <MapPin className="text-amber-500 w-6 h-6" />
                 </div>
@@ -60,9 +90,15 @@ export default function FooterContact() {
                     Abrir no Waze / Google Maps &rarr;
                   </a>
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="flex gap-4 items-start mb-6 group">
+              <motion.div 
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+                }}
+                className="flex gap-4 items-start mb-6 group"
+              >
                 <div className="mt-1 bg-neutral-900 p-3 rounded-xl border border-neutral-800 group-hover:border-amber-600/50 transition-colors">
                   <Clock className="text-amber-500 w-6 h-6" />
                 </div>
@@ -83,9 +119,15 @@ export default function FooterContact() {
                     </li>
                   </ul>
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="flex gap-4 items-start group">
+              <motion.div 
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+                }}
+                className="flex gap-4 items-start group"
+              >
                 <div className="mt-1 bg-neutral-900 p-3 rounded-xl border border-neutral-800 group-hover:border-amber-600/50 transition-colors">
                   <Phone className="text-amber-500 w-6 h-6" />
                 </div>
@@ -99,16 +141,16 @@ export default function FooterContact() {
                     <span>@restaurantesantateresa</span>
                   </a>
                 </div>
-              </div>
+              </motion.div>
 
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
 
       {/* Micro-Rodapé */}
       <div className="bg-black py-6 border-t border-neutral-900">
-        <div className="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-neutral-600">
+        <div className="container mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left text-xs text-neutral-600">
           <p>&copy; {new Date().getFullYear()} Restaurante Santa Teresa Brotas. Todos os direitos reservados.</p>
           <p>
             Desenvolvido por <a href="#" className="text-neutral-400 hover:text-amber-500 transition-colors font-medium">Você / Agência</a>

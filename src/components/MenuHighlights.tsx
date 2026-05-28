@@ -1,5 +1,8 @@
+"use client";
+
 import { UtensilsCrossed, Plus } from "lucide-react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 const destaques = [
   {
@@ -38,23 +41,42 @@ const destaques = [
 
 export default function MenuHighlights() {
   return (
-    <section id="cardapio" className="py-24 bg-neutral-950 relative border-t border-neutral-900">
-      <div className="container mx-auto px-6">
+    <section id="cardapio" className="py-16 md:py-24 bg-neutral-950 relative border-t border-neutral-900">
+      <div className="container mx-auto px-4 sm:px-6">
         
-        <div className="text-center mb-16">
-          <span className="text-amber-600 font-semibold tracking-widest text-sm uppercase mb-3 block">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-12 md:mb-16"
+        >
+          <span className="text-amber-600 font-semibold tracking-widest text-xs md:text-sm uppercase mb-3 block">
             Os Campeões de Vendas
           </span>
           <h2 className="text-3xl md:text-5xl font-bold text-white font-serif">
             Destaques do Cardápio
           </h2>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+        <motion.div 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.15 } }
+          }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto"
+        >
           {destaques.map((prato) => (
-            <div 
+            <motion.div 
               key={prato.id}
-              className="bg-neutral-900 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group cursor-pointer flex flex-col border border-neutral-800 hover:border-amber-600/30"
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+              }}
+              className="bg-neutral-900 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group cursor-pointer flex flex-col border border-neutral-800 hover:border-amber-600/30 h-full"
             >
               <div className="relative h-56 w-full overflow-hidden">
                 <Image 
@@ -69,15 +91,17 @@ export default function MenuHighlights() {
                 </span>
               </div>
               
-              <div className="p-6 flex flex-col flex-grow">
-                <h3 className="text-xl font-bold text-white mb-2 font-serif">
-                  {prato.nome}
-                </h3>
-                <p className="text-sm text-neutral-400 mb-6 flex-grow leading-relaxed">
-                  {prato.descricao}
-                </p>
+              <div className="p-5 md:p-6 flex flex-col flex-grow justify-between">
+                <div>
+                  <h3 className="text-lg md:text-xl font-bold text-white mb-2 font-serif">
+                    {prato.nome}
+                  </h3>
+                  <p className="text-sm text-neutral-400 mb-6 leading-relaxed">
+                    {prato.descricao}
+                  </p>
+                </div>
                 
-                <div className="flex justify-between items-center mt-auto pt-4 border-t border-neutral-800">
+                <div className="flex justify-between items-center pt-4 border-t border-neutral-800 mt-auto">
                   <span className="text-lg font-bold text-amber-500">
                     {prato.preco}
                   </span>
@@ -86,19 +110,25 @@ export default function MenuHighlights() {
                   </button>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
-        <div className="mt-16 text-center">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="mt-12 md:mt-16 text-center px-4"
+        >
           <a 
             href="#" 
-            className="inline-flex items-center justify-center gap-2 border-2 border-amber-600 text-amber-500 hover:bg-amber-600 hover:text-white font-semibold py-4 px-10 rounded-full transition-all hover:scale-105"
+            className="inline-flex items-center justify-center gap-2 border-2 border-amber-600 text-amber-500 hover:bg-amber-600 hover:text-white font-semibold py-3 md:py-4 px-8 md:px-10 rounded-full transition-all hover:scale-105 w-full sm:w-auto"
           >
             <UtensilsCrossed size={20} />
             Ver Cardápio Completo
           </a>
-        </div>
+        </motion.div>
         
       </div>
     </section>

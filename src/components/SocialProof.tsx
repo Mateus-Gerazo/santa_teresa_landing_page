@@ -3,6 +3,7 @@
 import { Star, ShieldCheck } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 type Review = {
   author_name: string;
@@ -35,28 +36,41 @@ export default function SocialProof() {
   }, []);
 
   return (
-    <section className="py-24 bg-neutral-900 border-t border-neutral-800">
-      <div className="container mx-auto px-6">
+    <section className="py-16 md:py-24 bg-neutral-900 border-t border-neutral-800">
+      <div className="container mx-auto px-4 sm:px-6">
 
-        <div className="text-center mb-16">
-          <span className="text-amber-600 font-semibold tracking-widest text-sm uppercase mb-3 block">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-12 md:mb-16"
+        >
+          <span className="text-amber-600 font-semibold tracking-widest text-xs md:text-sm uppercase mb-3 block">
             A Voz dos Clientes
           </span>
           <h2 className="text-3xl md:text-5xl font-bold text-white font-serif">
             O que dizem sobre nós
           </h2>
-        </div>
+        </motion.div>
 
-        <div
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.15 } }
+          }}
           ref={scrollContainerRef}
-          className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 md:grid md:grid-cols-3 md:gap-8 hide-scrollbar"
+          className="flex overflow-x-auto snap-x snap-mandatory gap-4 sm:gap-6 pb-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8 hide-scrollbar items-stretch"
         >
           {isLoading ? (
             // Skeleton loaders
             [1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="snap-center shrink-0 w-[85vw] md:w-auto bg-neutral-950 p-8 rounded-3xl border border-neutral-800 flex flex-col shadow-xl animate-pulse"
+                className="snap-center shrink-0 w-[85vw] sm:w-[350px] md:w-auto h-full bg-neutral-950 p-6 md:p-8 rounded-3xl border border-neutral-800 flex flex-col justify-between shadow-xl animate-pulse"
               >
                 <div className="flex items-start gap-4 mb-6">
                   <div className="w-14 h-14 rounded-full bg-neutral-800 shrink-0"></div>
@@ -74,9 +88,13 @@ export default function SocialProof() {
             ))
           ) : (
             reviews.map((review, index) => (
-              <div
+              <motion.div
                 key={index}
-                className="snap-center shrink-0 w-[85vw] md:w-auto bg-neutral-950 p-8 rounded-3xl border border-neutral-800 flex flex-col shadow-xl"
+                variants={{
+                  hidden: { opacity: 0, x: 20 },
+                  visible: { opacity: 1, x: 0, transition: { duration: 0.6 } }
+                }}
+                className="snap-center shrink-0 w-[85vw] sm:w-[350px] md:w-auto h-full bg-neutral-950 p-6 md:p-8 rounded-3xl border border-neutral-800 flex flex-col justify-between shadow-xl"
               >
                 <div className="flex justify-between items-start mb-6">
                   <div className="flex items-center gap-4">
@@ -99,27 +117,35 @@ export default function SocialProof() {
                   </div>
                 </div>
 
-                <p className="text-neutral-300 text-sm leading-relaxed italic flex-grow">
-                  "{review.text}"
-                </p>
+                <div className="flex-grow flex flex-col">
+                  <p className="text-neutral-300 text-sm leading-relaxed italic line-clamp-6">
+                    "{review.text}"
+                  </p>
+                </div>
 
-                <div className="mt-6 flex items-center justify-end gap-1 opacity-50">
+                <div className="mt-6 flex items-center justify-end gap-1 opacity-50 pt-4 border-t border-neutral-800/50">
                   <ShieldCheck size={14} className="text-blue-400" />
                   <span className="text-xs text-neutral-500">Avaliação verificada no Google</span>
                 </div>
-              </div>
+              </motion.div>
             ))
           )}
-        </div>
+        </motion.div>
 
-        <div className="text-center mt-10">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 1, delay: 0.5 }}
+          className="text-center mt-10"
+        >
           <p className="text-neutral-400 text-sm">
             Mais de <strong className="text-white">250 avaliações positivas</strong> no Google.{" "}
             <a href="#" className="text-amber-500 hover:text-amber-400 underline decoration-amber-500/30 underline-offset-4 transition-colors">
               Veja todas as avaliações
             </a>
           </p>
-        </div>
+        </motion.div>
 
       </div>
     </section>

@@ -1,14 +1,21 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ChevronDown, MapPin, UtensilsCrossed } from "lucide-react";
 
 export default function Hero() {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
 
   useEffect(() => {
     const fetchPlaceStatus = async () => {
@@ -36,11 +43,11 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden">
+    <section ref={ref} className="relative min-h-[100dvh] w-full flex flex-col items-center justify-center overflow-hidden">
       {/* Background Image & Overlay */}
-      <div
+      <motion.div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/images/hero-prato-assinatura.jpg')" }}
+        style={{ backgroundImage: "url('/images/hero-prato-assinatura.jpg')", y }}
       />
       <div className="absolute inset-0 bg-black/60" />
 
@@ -79,12 +86,12 @@ export default function Hero() {
       </nav>
 
       {/* Main Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto mt-20">
+      <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 max-w-4xl mx-auto mt-20 pb-24">
         <motion.span
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="tracking-widest text-amber-500 text-sm md:text-base font-semibold uppercase mb-4"
+          className="tracking-widest text-amber-500 text-xs md:text-sm lg:text-base font-semibold uppercase mb-4"
         >
           Tradição na Mário Pinoti
         </motion.span>
@@ -102,7 +109,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-lg md:text-xl text-neutral-300 mb-10 max-w-2xl mx-auto font-light"
+          className="text-base md:text-lg lg:text-xl text-neutral-300 mb-10 max-w-2xl mx-auto font-light"
         >
           Um ambiente acolhedor com pratos inesquecíveis, perfeito para o seu almoço ou jantar no coração da cidade.
         </motion.p>
@@ -115,14 +122,14 @@ export default function Hero() {
         >
           <a
             href="#cardapio"
-            className="flex items-center justify-center gap-2 bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-8 rounded-full transition-all hover:scale-105 shadow-[0_0_20px_rgba(212,165,116,0.3)]"
+            className="flex items-center justify-center gap-2 w-full sm:w-auto bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-8 rounded-full transition-all hover:scale-105 shadow-[0_0_20px_rgba(212,165,116,0.3)]"
           >
             <UtensilsCrossed size={20} />
             Ver Cardápio e Destaques
           </a>
           <a
             href="#localizacao"
-            className="flex items-center justify-center gap-2 border-2 border-white/50 hover:border-white text-white bg-white/5 backdrop-blur-sm py-3 px-8 rounded-full transition-all hover:bg-white/10"
+            className="flex items-center justify-center gap-2 w-full sm:w-auto border-2 border-white/50 hover:border-white text-white bg-white/5 backdrop-blur-sm py-3 px-8 rounded-full transition-all hover:bg-white/10"
           >
             <MapPin size={20} />
             Como Chegar

@@ -24,7 +24,14 @@ export async function GET() {
     }
 
     const isOpen = data.result?.current_opening_hours?.open_now ?? false;
-    const reviews = data.result?.reviews || [];
+    const rawReviews = data.result?.reviews || [];
+    
+    const reviews = rawReviews.filter(
+      (review: any) =>
+        review.rating >= 4 &&
+        review.text &&
+        review.text.trim() !== ""
+    );
 
     return NextResponse.json({ isOpen, reviews });
   } catch (error) {
