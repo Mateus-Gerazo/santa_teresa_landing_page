@@ -39,7 +39,7 @@ export default function SocialProof() {
     <section className="py-16 md:py-24 bg-neutral-900 border-t border-neutral-800">
       <div className="container mx-auto px-4 sm:px-6">
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -132,7 +132,7 @@ export default function SocialProof() {
           )}
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, margin: "-50px" }}
@@ -141,7 +141,7 @@ export default function SocialProof() {
         >
           <p className="text-neutral-400 text-sm">
             Mais de <strong className="text-white">250 avaliações positivas</strong> no Google.{" "}
-            <a href="#" className="text-amber-500 hover:text-amber-400 underline decoration-amber-500/30 underline-offset-4 transition-colors">
+            <a href="https://www.google.com/maps/place/Restaurante+Santa+Teresa+Brotas/@-22.2907705,-48.1292853,20.67z/data=!4m8!3m7!1s0x94c779004a573993:0xb050a71544bdf394!8m2!3d-22.2908135!4d-48.129134!9m1!1b1!16s%2Fg%2F11y3my1scc?entry=ttu&g_ep=EgoyMDI2MDUyNy4wIKXMDSoASAFQAw%3D%3D" className="text-amber-500 hover:text-amber-400 underline decoration-amber-500/30 underline-offset-4 transition-colors">
               Veja todas as avaliações
             </a>
           </p>

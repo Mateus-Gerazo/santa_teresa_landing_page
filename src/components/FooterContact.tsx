@@ -29,7 +29,7 @@ export default function FooterContact() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-24 items-center">
 
           {/* Lado Esquerdo: Mapa */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
@@ -49,7 +49,7 @@ export default function FooterContact() {
           </motion.div>
 
           {/* Lado Direito: Informações */}
-          <motion.div 
+          <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-100px" }}
@@ -60,7 +60,7 @@ export default function FooterContact() {
             className="flex flex-col gap-10"
           >
             <div>
-              <motion.h2 
+              <motion.h2
                 variants={{
                   hidden: { opacity: 0, y: 20 },
                   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
@@ -70,7 +70,7 @@ export default function FooterContact() {
                 Venha nos visitar
               </motion.h2>
 
-              <motion.div 
+              <motion.div
                 variants={{
                   hidden: { opacity: 0, y: 20 },
                   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
@@ -92,7 +92,7 @@ export default function FooterContact() {
                 </div>
               </motion.div>
 
-              <motion.div 
+              <motion.div
                 variants={{
                   hidden: { opacity: 0, y: 20 },
                   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
@@ -121,7 +121,7 @@ export default function FooterContact() {
                 </div>
               </motion.div>
 
-              <motion.div 
+              <motion.div
                 variants={{
                   hidden: { opacity: 0, y: 20 },
                   visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
@@ -136,7 +136,7 @@ export default function FooterContact() {
                   <p className="text-neutral-400 mb-2">
                     (14) 99709-6292
                   </p>
-                  <a href="#" className="inline-flex items-center gap-2 text-neutral-400 hover:text-amber-500 transition-colors">
+                  <a href="https://www.instagram.com/santateresabrotas/" className="inline-flex items-center gap-2 text-neutral-400 hover:text-amber-500 transition-colors">
                     <InstagramIcon size={18} />
                     <span>@restaurantesantateresa</span>
                   </a>

@@ -3,6 +3,8 @@
 import { UtensilsCrossed, Plus } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useState } from "react";
+import { MenuModal } from "./MenuModal";
 
 const destaques = [
   {
@@ -11,7 +13,7 @@ const destaques = [
     descricao: "Um clássico irresistível. Acompanha arroz branco e batata frita crocante.",
     preco: "R$ 158,00",
     tag: "Mais Pedido",
-    imagem: "/images/prato-parmegiana.jpg" 
+    imagem: "/images/prato-parmegiana.jpg"
   },
   {
     id: 2,
@@ -40,11 +42,13 @@ const destaques = [
 ];
 
 export default function MenuHighlights() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <section id="cardapio" className="py-16 md:py-24 bg-neutral-950 relative border-t border-neutral-900">
       <div className="container mx-auto px-4 sm:px-6">
-        
-        <motion.div 
+
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -59,7 +63,7 @@ export default function MenuHighlights() {
           </h2>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
@@ -70,7 +74,7 @@ export default function MenuHighlights() {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 max-w-7xl mx-auto"
         >
           {destaques.map((prato) => (
-            <motion.div 
+            <motion.div
               key={prato.id}
               variants={{
                 hidden: { opacity: 0, y: 30 },
@@ -79,8 +83,8 @@ export default function MenuHighlights() {
               className="bg-neutral-900 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group cursor-pointer flex flex-col border border-neutral-800 hover:border-amber-600/30 h-full"
             >
               <div className="relative h-56 w-full overflow-hidden">
-                <Image 
-                  src={prato.imagem} 
+                <Image
+                  src={prato.imagem}
                   alt={prato.nome}
                   fill
                   className="object-cover group-hover:scale-110 transition-transform duration-700"
@@ -90,7 +94,7 @@ export default function MenuHighlights() {
                   {prato.tag}
                 </span>
               </div>
-              
+
               <div className="p-5 md:p-6 flex flex-col flex-grow justify-between">
                 <div>
                   <h3 className="text-lg md:text-xl font-bold text-white mb-2 font-serif">
@@ -100,7 +104,7 @@ export default function MenuHighlights() {
                     {prato.descricao}
                   </p>
                 </div>
-                
+
                 <div className="flex justify-between items-center pt-4 border-t border-neutral-800 mt-auto">
                   <span className="text-lg font-bold text-amber-500">
                     {prato.preco}
@@ -114,22 +118,23 @@ export default function MenuHighlights() {
           ))}
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, delay: 0.4 }}
           className="mt-12 md:mt-16 text-center px-4"
         >
-          <a 
-            href="#" 
-            className="inline-flex items-center justify-center gap-2 border-2 border-amber-600 text-amber-500 hover:bg-amber-600 hover:text-white font-semibold py-3 md:py-4 px-8 md:px-10 rounded-full transition-all hover:scale-105 w-full sm:w-auto"
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="inline-flex items-center justify-center gap-2 border-2 border-amber-600 text-amber-500 hover:bg-amber-600 hover:text-white font-semibold py-4 px-10 rounded-full transition-all hover:scale-105"
           >
             <UtensilsCrossed size={20} />
             Ver Cardápio Completo
-          </a>
+          </button>
         </motion.div>
-        
+
+        <MenuModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
       </div>
     </section>
   );
