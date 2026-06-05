@@ -138,7 +138,7 @@ export default function FooterContact() {
                   </p>
                   <a href="https://www.instagram.com/santateresabrotas/" className="inline-flex items-center gap-2 text-neutral-400 hover:text-amber-500 transition-colors">
                     <InstagramIcon size={18} />
-                    <span>@restaurantesantateresa</span>
+                    <span>@santateresabrotas</span>
                   </a>
                 </div>
               </motion.div>
