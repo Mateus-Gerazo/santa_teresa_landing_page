@@ -64,7 +64,7 @@ export default function FloatingWhatsApp() {
           }}
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.3 }}
-          className={`fixed bottom-10 right-10 z-[1000] ${isFooterVisible ? "pointer-events-none" : "pointer-events-auto"}`}
+          className={`fixed bottom-10 right-10 z-[1000] floating-whatsapp-btn ${isFooterVisible ? "pointer-events-none" : "pointer-events-auto"}`}
         >
           <a
             href={whatsappLink}

@@ -136,7 +136,7 @@ export default function FooterContact() {
                   <p className="text-neutral-400 mb-2">
                     (14) 99709-6292
                   </p>
-                  <a href="https://www.instagram.com/santateresabrotas/" className="inline-flex items-center gap-2 text-neutral-400 hover:text-amber-500 transition-colors">
+                  <a target="_blank" href="https://www.instagram.com/santateresabrotas/" className="inline-flex items-center gap-2 text-neutral-400 hover:text-amber-500 transition-colors">
                     <InstagramIcon size={18} />
                     <span>@santateresabrotas</span>
                   </a>
@@ -153,7 +153,7 @@ export default function FooterContact() {
         <div className="container mx-auto px-4 sm:px-6 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left text-xs text-neutral-600">
           <p>&copy; {new Date().getFullYear()} Restaurante Santa Teresa Brotas. Todos os direitos reservados.</p>
           <p>
-            Desenvolvido por <a href="#" className="text-neutral-400 hover:text-amber-500 transition-colors font-medium">Você / Agência</a>
+            Desenvolvido por <a target="_blank" href="https://github.com/Mateus-Gerazo" className="text-neutral-400 hover:text-amber-500 transition-colors font-medium">Mateus Gerazo</a>
           </p>
         </div>
       </div>

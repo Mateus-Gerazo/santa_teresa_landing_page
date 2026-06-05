@@ -159,11 +159,14 @@ export function MenuModal({ isOpen, onClose }: MenuModalProps) {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      document.body.classList.add("modal-open");
     } else {
       document.body.style.overflow = "unset";
+      document.body.classList.remove("modal-open");
     }
     return () => {
       document.body.style.overflow = "unset";
+      document.body.classList.remove("modal-open");
     };
   }, [isOpen]);
 
@@ -344,19 +347,20 @@ export function MenuModal({ isOpen, onClose }: MenuModalProps) {
                     </div>
                   </div>
                 ))}
-              </div>
 
-              {/* Footer (Sticky) */}
-              <div className="absolute bottom-0 left-0 right-0 p-4 bg-neutral-900 border-t border-neutral-800 z-20">
-                <a
-                  href="https://wa.me/5514997096292?text=Ol%C3%A1!%20Acabei%20de%20ver%20o%20card%C3%A1pio%20no%20site%20e%20gostaria%20de%20fazer%20um%20pedido%20ou%20reserva."
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-500 text-white font-semibold py-3.5 px-6 rounded-xl transition-colors shadow-lg shadow-green-900/20"
-                >
-                  <MessageCircle className="w-5 h-5" />
-                  Fazer Reserva / Pedir no WhatsApp
-                </a>
+                {/* CTA at the end of the scroll */}
+                <div className="flex flex-col items-center justify-center mt-8 mb-8">
+                  <p className="text-neutral-400 text-sm mb-3">Gostou do que viu?</p>
+                  <a
+                    href="https://wa.me/5514997096292?text=Ol%C3%A1!%20Acabei%20de%20ver%20o%20card%C3%A1pio%20no%20site%20e%20gostaria%20de%20fazer%20um%20pedido%20ou%20reserva."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 border-2 border-amber-600 text-amber-500 hover:bg-amber-600 hover:text-white font-bold py-3 px-10 rounded-full transition-all"
+                  >
+                    Fazer Reserva
+                    <MessageCircle className="w-5 h-5" />
+                  </a>
+                </div>
               </div>
             </motion.div>
           </div>

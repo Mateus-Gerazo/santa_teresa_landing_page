@@ -24,7 +24,9 @@ export default function SocialProof() {
         const res = await fetch('/api/google-places');
         if (res.ok) {
           const data = await res.json();
-          setReviews(data.reviews || []);
+          // Limita para exibir apenas 3 avaliações
+          const allReviews = data.reviews || [];
+          setReviews(allReviews.slice(0, 3));
         }
       } catch (error) {
         console.error("Failed to fetch reviews", error);
@@ -63,14 +65,14 @@ export default function SocialProof() {
             visible: { transition: { staggerChildren: 0.15 } }
           }}
           ref={scrollContainerRef}
-          className="flex overflow-x-auto snap-x snap-mandatory gap-4 sm:gap-6 pb-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-8 hide-scrollbar items-stretch"
+          className="flex overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none gap-4 sm:gap-6 pb-8 md:flex-wrap md:justify-center md:gap-8 hide-scrollbar items-stretch"
         >
           {isLoading ? (
             // Skeleton loaders
             [1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="snap-center shrink-0 w-[85vw] sm:w-[350px] md:w-auto h-full bg-neutral-950 p-6 md:p-8 rounded-3xl border border-neutral-800 flex flex-col justify-between shadow-xl animate-pulse"
+                className="snap-center shrink-0 w-[85vw] sm:w-[350px] md:w-[calc(50%-16px)] lg:w-[calc(33.333%-21.33px)] h-full bg-neutral-950 p-6 md:p-8 rounded-3xl border border-neutral-800 flex flex-col justify-between shadow-xl animate-pulse"
               >
                 <div className="flex items-start gap-4 mb-6">
                   <div className="w-14 h-14 rounded-full bg-neutral-800 shrink-0"></div>
@@ -94,7 +96,7 @@ export default function SocialProof() {
                   hidden: { opacity: 0, x: 20 },
                   visible: { opacity: 1, x: 0, transition: { duration: 0.6 } }
                 }}
-                className="snap-center shrink-0 w-[85vw] sm:w-[350px] md:w-auto h-full bg-neutral-950 p-6 md:p-8 rounded-3xl border border-neutral-800 flex flex-col justify-between shadow-xl"
+                className="snap-center shrink-0 w-[85vw] sm:w-[350px] md:w-[calc(50%-16px)] lg:w-[calc(33.333%-21.33px)] h-full bg-neutral-950 p-6 md:p-8 rounded-3xl border border-neutral-800 flex flex-col justify-between shadow-xl"
               >
                 <div className="flex justify-between items-start mb-6">
                   <div className="flex items-center gap-4">

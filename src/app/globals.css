@@ -43,3 +43,10 @@ body {
     );
   }
 }
+
+/* Oculta botão flutuante quando modal estiver aberto */
+body.modal-open .floating-whatsapp-btn {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  display: none !important;
+}
