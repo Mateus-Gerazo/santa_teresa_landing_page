@@ -109,9 +109,6 @@ export default function MenuHighlights() {
                   <span className="text-lg font-bold text-amber-500">
                     {prato.preco}
                   </span>
-                  <button className="w-8 h-8 rounded-full bg-neutral-800 flex items-center justify-center text-white group-hover:bg-amber-600 transition-colors">
-                    <Plus size={16} />
-                  </button>
                 </div>
               </div>
             </motion.div>
