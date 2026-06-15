@@ -121,18 +121,18 @@ export default function Hero() {
           className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
         >
           <a
-            href="#cardapio"
+            href="#reservas"
             className="flex items-center justify-center gap-2 w-full sm:w-auto bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-8 rounded-full transition-all hover:scale-105 shadow-[0_0_20px_rgba(212,165,116,0.3)]"
           >
             <UtensilsCrossed size={20} />
-            Ver Cardápio e Destaques
+            Reservar Mesa
           </a>
           <a
-            href="#localizacao"
+            href="#cardapio"
             className="flex items-center justify-center gap-2 w-full sm:w-auto border-2 border-white/50 hover:border-white text-white bg-white/5 backdrop-blur-sm py-3 px-8 rounded-full transition-all hover:bg-white/10"
           >
-            <MapPin size={20} />
-            Como Chegar
+            <UtensilsCrossed size={20} />
+            Ver Cardápio
           </a>
         </motion.div>
       </div>

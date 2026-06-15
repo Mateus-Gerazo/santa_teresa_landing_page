@@ -4,6 +4,7 @@ import MenuHighlights from "@/components/MenuHighlights";
 import SocialProof from "@/components/SocialProof";
 import FooterContact from "@/components/FooterContact";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
+import ReservationSection from "@/components/ReservationSection";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
       <Hero />
       <Experience />
       <MenuHighlights />
+      <ReservationSection />
       <SocialProof />
       <FooterContact />
       <FloatingWhatsApp />
