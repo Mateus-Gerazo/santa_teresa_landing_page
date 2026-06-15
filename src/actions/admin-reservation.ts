@@ -2,12 +2,13 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { verifyAuth } from "./auth";
 import { ReservationStatus } from "@prisma/client";
+import { cookies } from "next/headers";
 
 export async function getReservations(filters?: { status?: string; date?: string; search?: string }) {
-  const isAuth = await verifyAuth();
-  if (!isAuth) throw new Error("Unauthorized");
+  const cookieStore = await cookies();
+  const isAuth = cookieStore.get('admin_token')?.value === 'authenticated';
+  if (!isAuth) return { success: false, error: "Unauthorized" };
 
   const where: any = {};
   
@@ -34,12 +35,13 @@ export async function getReservations(filters?: { status?: string; date?: string
     ],
   });
 
-  return reservations;
+  return { success: true, data: reservations };
 }
 
 export async function updateReservationStatus(id: string, status: ReservationStatus) {
-  const isAuth = await verifyAuth();
-  if (!isAuth) throw new Error("Unauthorized");
+  const cookieStore = await cookies();
+  const isAuth = cookieStore.get('admin_token')?.value === 'authenticated';
+  if (!isAuth) return { success: false, error: "Unauthorized" };
 
   try {
     await prisma.reservation.update({

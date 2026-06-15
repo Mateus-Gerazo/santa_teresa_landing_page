@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { loginAdmin } from "@/actions/auth";
 import Image from "next/image";
 import { Lock } from "lucide-react";
+import { loginAdmin } from "@/actions/auth";
 
 export default function LoginPage() {
   const [password, setPassword] = useState("");
@@ -14,28 +14,30 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setError("");
+    setLoading(true);
 
     try {
       const res = await loginAdmin(password);
+      
       if (res.success) {
         router.push("/admin/reservas");
+        router.refresh();
       } else {
-        setError(res.error || "Erro ao fazer login");
+        setError(res.error || "Erro ao fazer login.");
       }
     } catch (err) {
-      setError("Erro de conexão");
+      setError("Erro de conexão.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
-      <div className="absolute inset-0 bg-[url('/images/hero-prato-assinatura.jpg')] bg-cover bg-center opacity-20" />
+    <div className="min-h-screen flex items-center justify-center p-4 bg-neutral-950 text-neutral-50 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[url('/images/hero-prato-assinatura.jpg')] bg-cover bg-center opacity-10" />
       
-      <div className="w-full max-w-md bg-neutral-800/80 backdrop-blur-md rounded-2xl border border-neutral-700 shadow-2xl p-8 relative z-10">
+      <div className="w-full max-w-md bg-neutral-900/90 backdrop-blur-md rounded-2xl border border-neutral-800 shadow-2xl p-8 relative z-10">
         <div className="text-center mb-8">
           <Image 
             src="/images/santa_teresa_logo_branca.png" 
@@ -44,8 +46,8 @@ export default function LoginPage() {
             height={60} 
             className="mx-auto h-12 w-auto object-contain mb-6"
           />
-          <h1 className="text-2xl font-serif font-bold text-white mb-2">Painel de Administração</h1>
-          <p className="text-neutral-400 text-sm">Digite a senha para acessar as reservas</p>
+          <h1 className="text-2xl font-serif font-bold text-white mb-2">Acesso Restrito</h1>
+          <p className="text-neutral-400 text-sm">Digite a senha para acessar o painel administrativo.</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -64,21 +66,16 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Senha de Acesso"
                 required
-                className="w-full bg-neutral-900/80 border border-neutral-700 rounded-lg py-3 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all"
+                className="w-full bg-neutral-950 border border-neutral-800 rounded-lg py-3 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all"
               />
             </div>
           </div>
 
           <button
             type="submit"
-            disabled={loading}
-            className="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-8 rounded-lg transition-all shadow-lg flex items-center justify-center disabled:opacity-70"
+            className="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-8 rounded-lg transition-all shadow-lg flex items-center justify-center"
           >
-            {loading ? (
-              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-            ) : (
-              "Entrar"
-            )}
+            Entrar
           </button>
         </form>
       </div>

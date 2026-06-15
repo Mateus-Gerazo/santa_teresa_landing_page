@@ -4,7 +4,6 @@ import { logoutAdmin } from "@/actions/auth";
 import { LogOut } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
-
 export default function AdminLayout({
   children,
 }: {
@@ -21,11 +20,12 @@ export default function AdminLayout({
   const handleLogout = async () => {
     await logoutAdmin();
     router.push("/admin/login");
+    router.refresh();
   };
 
   return (
-    <div className="min-h-screen bg-neutral-100 flex flex-col font-sans">
-      <header className="bg-neutral-900 text-white shadow-md">
+    <div className="min-h-screen bg-neutral-950 text-neutral-50 flex flex-col font-sans">
+      <header className="bg-neutral-900 shadow-md border-b border-neutral-800">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Image 
@@ -41,7 +41,7 @@ export default function AdminLayout({
           </div>
           <button 
             onClick={handleLogout}
-            className="flex items-center gap-2 text-neutral-300 hover:text-white transition-colors text-sm"
+            className="flex items-center gap-2 text-neutral-400 hover:text-white transition-colors text-sm"
           >
             <LogOut size={16} />
             <span className="hidden sm:inline">Sair</span>

@@ -1,24 +1,20 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { jwtVerify } from 'jose';
 
-export async function proxy(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname;
-  const isProtectedRoute = path.startsWith('/admin') && !path.startsWith('/admin/login');
-
-  if (isProtectedRoute) {
-    const token = request.cookies.get('admin_token')?.value;
-
-    if (!token) {
-      return NextResponse.redirect(new URL('/admin/login', request.url));
+  
+  // Intercepta rotas que começam com /admin
+  if (path.startsWith('/admin')) {
+    // Exceção: A rota de login deve estar sempre acessível
+    if (path === '/admin/login') {
+      return NextResponse.next();
     }
 
-    try {
-      const secretKey = process.env.ADMIN_PASSWORD || "default_secret_key_change_me";
-      const key = new TextEncoder().encode(secretKey);
-      await jwtVerify(token, key);
-      return NextResponse.next();
-    } catch (error) {
+    // Regra: Se não tiver o cookie admin_token, redireciona para o login
+    const token = request.cookies.get('admin_token')?.value;
+    
+    if (!token) {
       return NextResponse.redirect(new URL('/admin/login', request.url));
     }
   }
@@ -26,6 +22,7 @@ export async function proxy(request: NextRequest) {
   return NextResponse.next();
 }
 
+// Opcional: configurar o matcher para executar o proxy apenas nessas rotas
 export const config = {
   matcher: ['/admin/:path*'],
 };
