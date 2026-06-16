@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ChevronDown, MapPin, UtensilsCrossed } from "lucide-react";
+import { ChevronDown, MapPin, UtensilsCrossed, CalendarCheck } from "lucide-react";
 
 export default function Hero() {
   const [scrolled, setScrolled] = useState(false);
@@ -124,7 +124,7 @@ export default function Hero() {
             href="#reservas"
             className="flex items-center justify-center gap-2 w-full sm:w-auto bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-8 rounded-full transition-all hover:scale-105 shadow-[0_0_20px_rgba(212,165,116,0.3)]"
           >
-            <UtensilsCrossed size={20} />
+            <CalendarCheck size={20} />
             Reservar Mesa
           </a>
           <a
