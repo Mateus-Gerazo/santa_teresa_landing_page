@@ -6,6 +6,8 @@ import { getReservations, updateReservationStatus } from "@/actions/admin-reserv
 import { ReservationStatus } from "@prisma/client";
 import { format } from "date-fns";
 import { CheckCircle, XCircle, Clock, CheckCircle2, Search, Calendar as CalendarIcon, Filter } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+import { toast } from "sonner";
 
 type Reservation = {
   id: string;
@@ -61,6 +63,49 @@ export default function AdminReservationsPage() {
   useEffect(() => {
     fetchReservations();
   }, [statusFilter, dateFilter, searchFilter]);
+
+  // Realtime subscription for new reservations
+  useEffect(() => {
+    // A simple, discrete "pop" sound for notification
+    const notificationSound = new Audio("https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3");
+    
+    const channel = supabase
+      .channel('reservations-changes')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'Reservation' },
+        (payload) => {
+          const newReservation = payload.new as Reservation;
+          
+          // Update the state with the new reservation
+          setReservations((prev) => {
+            // Avoid adding duplicates just in case
+            if (prev.some(r => r.id === newReservation.id)) return prev;
+            
+            const newReservations = [...prev, newReservation];
+            return newReservations.sort((a, b) => {
+              const dateA = new Date(`${a.date}T${a.time}`);
+              const dateB = new Date(`${b.date}T${b.time}`);
+              return dateA.getTime() - dateB.getTime();
+            });
+          });
+
+          // Show visual notification
+          toast.success(`Nova reserva de ${newReservation.name}`, {
+            description: `Para dia ${format(new Date(`${newReservation.date}T00:00:00`), 'dd/MM/yyyy')} às ${newReservation.time}`,
+            duration: 6000,
+          });
+
+          // Play sound (may be blocked by browser if user hasn't interacted with page yet)
+          notificationSound.play().catch(e => console.log('Audio autoplay prevented by browser', e));
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   const handleStatusChange = async (id: string, status: ReservationStatus) => {
     const res = await updateReservationStatus(id, status);

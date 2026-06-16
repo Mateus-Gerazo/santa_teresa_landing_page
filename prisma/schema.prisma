@@ -3,8 +3,22 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Reservation {
+  id        String            @id @default(uuid())
+  name      String
+  phone     String
+  date      String
+  time      String
+  guests    Int
+  notes     String?
+  status    ReservationStatus @default(PENDING)
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
 }
 
 enum ReservationStatus {
@@ -12,17 +26,4 @@ enum ReservationStatus {
   CONFIRMED
   CANCELLED
   COMPLETED
-}
-
-model Reservation {
-  id        String            @id @default(uuid())
-  name      String
-  phone     String
-  date      String            // We can store as string YYYY-MM-DD to simplify or DateTime
-  time      String            // HH:MM
-  guests    Int
-  notes     String?
-  status    ReservationStatus @default(PENDING)
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt
 }
