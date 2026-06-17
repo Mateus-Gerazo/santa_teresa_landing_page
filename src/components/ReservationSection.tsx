@@ -43,6 +43,9 @@ export default function ReservationSection() {
 
   // Get today's date in YYYY-MM-DD for the min attribute
   const today = new Date().toISOString().split('T')[0];
+  const nextYear = new Date();
+  nextYear.setFullYear(nextYear.getFullYear() + 1);
+  const maxDate = nextYear.toISOString().split('T')[0];
 
   return (
     <section id="reservas" className="py-20 md:py-28 bg-neutral-900 text-white relative">
@@ -134,8 +137,15 @@ export default function ReservationSection() {
                       onChange={(e) => {
                         let value = e.target.value.replace(/\D/g, "");
                         if (value.length > 11) value = value.substring(0, 11);
-                        if (value.length > 2) value = `(${value.substring(0, 2)}) ${value.substring(2)}`;
-                        if (value.length > 9) value = `${value.substring(0, 9)}-${value.substring(9)}`;
+                        if (value.length > 10) {
+                          value = value.replace(/^(\d{2})(\d{5})(\d{4}).*/, "($1) $2-$3");
+                        } else if (value.length > 6) {
+                          value = value.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, "($1) $2-$3");
+                        } else if (value.length > 2) {
+                          value = value.replace(/^(\d{2})(\d{0,5})/, "($1) $2");
+                        } else if (value.length > 0) {
+                          value = value.replace(/^(\d*)/, "($1");
+                        }
                         e.target.value = value;
                       }}
                     />
@@ -152,6 +162,7 @@ export default function ReservationSection() {
                       name="date" 
                       required 
                       min={today}
+                      max={maxDate}
                       className="w-full bg-neutral-900/80 border border-neutral-700 rounded-lg py-3 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all [color-scheme:dark]"
                     />
                   </div>
@@ -181,7 +192,7 @@ export default function ReservationSection() {
                       name="guests" 
                       required 
                       min={1}
-                      max={20}
+                      max={15}
                       className="w-full bg-neutral-900/80 border border-neutral-700 rounded-lg py-3 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all"
                       placeholder="Ex: 2"
                     />
