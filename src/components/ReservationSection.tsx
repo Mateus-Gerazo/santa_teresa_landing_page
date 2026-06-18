@@ -14,7 +14,7 @@ export default function ReservationSection() {
     e.preventDefault();
     setLoading(true);
     setError("");
-    
+
     const formData = new FormData(e.currentTarget);
     const data = {
       name: formData.get("name") as string,
@@ -41,17 +41,29 @@ export default function ReservationSection() {
     }
   };
 
-  // Get today's date in YYYY-MM-DD for the min attribute
-  const today = new Date().toISOString().split('T')[0];
-  const nextYear = new Date();
-  nextYear.setFullYear(nextYear.getFullYear() + 1);
-  const maxDate = nextYear.toISOString().split('T')[0];
+  // Generate next 60 days
+  const dateOptions = Array.from({ length: 60 }, (_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() + i);
+    return d;
+  });
+
+  // Generate times from 10:00 to 21:30
+  const timeOptions = [];
+  for (let h = 10; h <= 21; h++) {
+    timeOptions.push(`${h.toString().padStart(2, "0")}:00`);
+    if (h === 21) {
+      timeOptions.push("21:30");
+      break;
+    }
+    timeOptions.push(`${h.toString().padStart(2, "0")}:30`);
+  }
 
   return (
     <section id="reservas" className="py-20 md:py-28 bg-neutral-900 text-white relative">
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="text-center mb-16">
-          <motion.span 
+          <motion.span
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -59,7 +71,7 @@ export default function ReservationSection() {
           >
             Viva essa experiência
           </motion.span>
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -68,7 +80,7 @@ export default function ReservationSection() {
           >
             Reserve sua Mesa
           </motion.h2>
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -79,7 +91,7 @@ export default function ReservationSection() {
 
         <div className="max-w-3xl mx-auto bg-neutral-800/50 backdrop-blur-sm p-8 md:p-10 rounded-2xl border border-white/10 shadow-2xl">
           {success ? (
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               className="text-center py-12"
@@ -91,7 +103,7 @@ export default function ReservationSection() {
               <p className="text-neutral-300">
                 Sua solicitação de reserva foi enviada com sucesso. Em breve entraremos em contato pelo telefone informado para confirmar sua mesa.
               </p>
-              <button 
+              <button
                 onClick={() => setSuccess(false)}
                 className="mt-8 text-amber-500 hover:text-amber-400 font-semibold transition-colors"
               >
@@ -105,17 +117,17 @@ export default function ReservationSection() {
                   {error}
                 </div>
               )}
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label htmlFor="name" className="text-sm font-medium text-neutral-300">Nome Completo</label>
                   <div className="relative">
                     <User className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500 w-5 h-5" />
-                    <input 
-                      type="text" 
-                      id="name" 
-                      name="name" 
-                      required 
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      required
                       minLength={3}
                       className="w-full bg-neutral-900/80 border border-neutral-700 rounded-lg py-3 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all"
                       placeholder="Seu nome"
@@ -127,11 +139,11 @@ export default function ReservationSection() {
                   <label htmlFor="phone" className="text-sm font-medium text-neutral-300">Telefone (WhatsApp)</label>
                   <div className="relative">
                     <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500 w-5 h-5" />
-                    <input 
-                      type="tel" 
-                      id="phone" 
-                      name="phone" 
-                      required 
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      required
                       className="w-full bg-neutral-900/80 border border-neutral-700 rounded-lg py-3 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all"
                       placeholder="(11) 99999-9999"
                       onChange={(e) => {
@@ -156,15 +168,36 @@ export default function ReservationSection() {
                   <label htmlFor="date" className="text-sm font-medium text-neutral-300">Data</label>
                   <div className="relative">
                     <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500 w-5 h-5" />
-                    <input 
-                      type="date" 
-                      id="date" 
-                      name="date" 
-                      required 
-                      min={today}
-                      max={maxDate}
-                      className="w-full bg-neutral-900/80 border border-neutral-700 rounded-lg py-3 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all [color-scheme:dark]"
-                    />
+                    <select
+                      id="date"
+                      name="date"
+                      required
+                      defaultValue=""
+                      className="w-full bg-neutral-900/80 border border-neutral-700 rounded-lg py-3 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all appearance-none cursor-pointer"
+                    >
+                      <option value="" disabled hidden>Selecione uma data</option>
+                      {dateOptions.map((d, idx) => {
+                        const isTuesday = d.getDay() === 2;
+                        const dateStr = d.toISOString().split("T")[0];
+                        const displayDate = new Intl.DateTimeFormat("pt-BR", {
+                          weekday: "short",
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric"
+                        }).format(d);
+
+                        return (
+                          <option
+                            key={idx}
+                            value={dateStr}
+                            disabled={isTuesday}
+                            className={isTuesday ? "text-neutral-500" : "text-white"}
+                          >
+                            {displayDate.charAt(0).toUpperCase() + displayDate.slice(1)} {isTuesday ? "(Fechado)" : ""}
+                          </option>
+                        );
+                      })}
+                    </select>
                   </div>
                 </div>
 
@@ -172,13 +205,20 @@ export default function ReservationSection() {
                   <label htmlFor="time" className="text-sm font-medium text-neutral-300">Horário</label>
                   <div className="relative">
                     <Clock className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500 w-5 h-5" />
-                    <input 
-                      type="time" 
-                      id="time" 
-                      name="time" 
-                      required 
-                      className="w-full bg-neutral-900/80 border border-neutral-700 rounded-lg py-3 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all [color-scheme:dark]"
-                    />
+                    <select
+                      id="time"
+                      name="time"
+                      required
+                      defaultValue=""
+                      className="w-full bg-neutral-900/80 border border-neutral-700 rounded-lg py-3 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all appearance-none cursor-pointer"
+                    >
+                      <option value="" disabled hidden>Selecione um horário</option>
+                      {timeOptions.map((time, idx) => (
+                        <option key={idx} value={time} className="text-white">
+                          {time}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
 
@@ -186,11 +226,11 @@ export default function ReservationSection() {
                   <label htmlFor="guests" className="text-sm font-medium text-neutral-300">Quantidade de Pessoas</label>
                   <div className="relative">
                     <Users className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500 w-5 h-5" />
-                    <input 
-                      type="number" 
-                      id="guests" 
-                      name="guests" 
-                      required 
+                    <input
+                      type="number"
+                      id="guests"
+                      name="guests"
+                      required
                       min={1}
                       max={15}
                       className="w-full bg-neutral-900/80 border border-neutral-700 rounded-lg py-3 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all"
@@ -203,9 +243,9 @@ export default function ReservationSection() {
                   <label htmlFor="notes" className="text-sm font-medium text-neutral-300">Observações (Opcional)</label>
                   <div className="relative">
                     <FileText className="absolute left-3 top-4 text-neutral-500 w-5 h-5" />
-                    <textarea 
-                      id="notes" 
-                      name="notes" 
+                    <textarea
+                      id="notes"
+                      name="notes"
                       rows={3}
                       className="w-full bg-neutral-900/80 border border-neutral-700 rounded-lg py-3 pl-10 pr-4 text-white focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all resize-none"
                       placeholder="Alguma restrição alimentar ou pedido especial?"
@@ -214,8 +254,8 @@ export default function ReservationSection() {
                 </div>
               </div>
 
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 disabled={loading}
                 className="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-4 px-8 rounded-lg transition-all hover:scale-[1.02] shadow-[0_0_20px_rgba(212,165,116,0.2)] flex items-center justify-center disabled:opacity-70 disabled:hover:scale-100"
               >

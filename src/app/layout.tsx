@@ -14,8 +14,34 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Restaurante Santa Teresa | Brotas - SP",
-  description: "Gastronomia, Charme e a Melhor Cachaça de Brotas.",
+  title: {
+    template: "%s | Restaurante Santa Teresa",
+    default: "Restaurante Santa Teresa | Gastronomia & Charme em Brotas - SP",
+  },
+  description: "Descubra a melhor gastronomia de Brotas no Restaurante Santa Teresa. Ambiente acolhedor, pratos exclusivos e a melhor cachaça da região. Faça sua reserva online!",
+  keywords: ["restaurante brotas", "onde comer em brotas", "restaurante santa teresa", "gastronomia brotas", "reserva online restaurante", "melhor restaurante de brotas", "cachaça brotas"],
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    url: "https://restaurantesantateresabrotas.com.br",
+    siteName: "Restaurante Santa Teresa",
+    title: "Restaurante Santa Teresa | Gastronomia & Charme em Brotas",
+    description: "Descubra a melhor gastronomia de Brotas no Restaurante Santa Teresa. Ambiente acolhedor e pratos exclusivos.",
+    images: [
+      {
+        url: "/og-image.jpg", // Substitua por uma imagem real do restaurante depois
+        width: 1200,
+        height: 630,
+        alt: "Interior do Restaurante Santa Teresa",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Restaurante Santa Teresa | Gastronomia em Brotas",
+    description: "Descubra a melhor gastronomia de Brotas no Restaurante Santa Teresa.",
+    images: ["/og-image.jpg"],
+  },
 };
 
 export default function RootLayout({
