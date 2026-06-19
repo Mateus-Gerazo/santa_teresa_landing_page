@@ -23,6 +23,7 @@ type Reservation = {
 
 export default function AdminReservationsPage() {
   const [reservations, setReservations] = useState<Reservation[]>([]);
+  const [reservaSelecionada, setReservaSelecionada] = useState<Reservation | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   
@@ -249,7 +250,11 @@ export default function AdminReservationsPage() {
                 </tr>
               ) : (
                 reservations.map((reservation) => (
-                  <tr key={reservation.id} className="hover:bg-neutral-800/50 transition-colors">
+                  <tr 
+                    key={reservation.id} 
+                    className="hover:bg-neutral-800 cursor-pointer transition-colors"
+                    onClick={() => setReservaSelecionada(reservation)}
+                  >
                     <td className="px-6 py-4">
                       <div className="font-medium text-white">
                         {format(new Date(`${reservation.date}T00:00:00`), 'dd/MM/yyyy')}
@@ -282,7 +287,7 @@ export default function AdminReservationsPage() {
                       <div className="flex justify-end gap-2">
                         {reservation.status === 'PENDING' && (
                           <button 
-                            onClick={() => handleStatusChange(reservation.id, 'CONFIRMED')}
+                            onClick={(e) => { e.stopPropagation(); handleStatusChange(reservation.id, 'CONFIRMED'); }}
                             className="p-1.5 text-blue-400 hover:bg-blue-500/10 rounded-lg transition-colors"
                             title="Confirmar"
                           >
@@ -291,7 +296,7 @@ export default function AdminReservationsPage() {
                         )}
                         {['PENDING', 'CONFIRMED'].includes(reservation.status) && (
                           <button 
-                            onClick={() => handleStatusChange(reservation.id, 'COMPLETED')}
+                            onClick={(e) => { e.stopPropagation(); handleStatusChange(reservation.id, 'COMPLETED'); }}
                             className="p-1.5 text-green-400 hover:bg-green-500/10 rounded-lg transition-colors"
                             title="Marcar como Concluída"
                           >
@@ -300,7 +305,7 @@ export default function AdminReservationsPage() {
                         )}
                         {['PENDING', 'CONFIRMED'].includes(reservation.status) && (
                           <button 
-                            onClick={() => handleStatusChange(reservation.id, 'CANCELLED')}
+                            onClick={(e) => { e.stopPropagation(); handleStatusChange(reservation.id, 'CANCELLED'); }}
                             className="p-1.5 text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
                             title="Cancelar"
                           >
@@ -316,6 +321,65 @@ export default function AdminReservationsPage() {
           </table>
         </div>
       </div>
+
+      {/* Modal de Detalhes da Reserva */}
+      {reservaSelecionada && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-neutral-900 border border-neutral-800 rounded-xl shadow-xl w-full max-w-md overflow-hidden flex flex-col">
+            <div className="p-6">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h2 className="text-xl font-bold text-white">{reservaSelecionada.name}</h2>
+                  <p className="text-amber-500 font-medium">{reservaSelecionada.guests} {reservaSelecionada.guests === 1 ? 'Pessoa' : 'Pessoas'}</p>
+                </div>
+                <button 
+                  onClick={() => setReservaSelecionada(null)}
+                  className="text-neutral-400 hover:text-white transition-colors"
+                >
+                  <XCircle size={24} />
+                </button>
+              </div>
+              
+              <div className="space-y-3 mb-6 text-sm text-neutral-300">
+                <div className="flex items-center gap-2">
+                  <CalendarIcon size={16} className="text-neutral-500" />
+                  <span>{format(new Date(`${reservaSelecionada.date}T00:00:00`), 'dd/MM/yyyy')}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Clock size={16} className="text-neutral-500" />
+                  <span>{reservaSelecionada.time}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-neutral-500 font-medium">Telefone:</span>
+                  <span>{reservaSelecionada.phone}</span>
+                </div>
+              </div>
+
+              <div className="mb-2">
+                <p className="text-sm font-medium text-neutral-400 mb-2">Observações:</p>
+                {reservaSelecionada.notes ? (
+                  <div className="bg-neutral-800/50 p-4 rounded-lg max-h-40 overflow-y-auto whitespace-pre-wrap text-sm text-neutral-300">
+                    {reservaSelecionada.notes}
+                  </div>
+                ) : (
+                  <div className="text-sm text-neutral-500 italic">Nenhuma observação.</div>
+                )}
+              </div>
+            </div>
+            
+            <div className="p-4 border-t border-neutral-800 bg-neutral-900/50">
+              <a 
+                href={`https://wa.me/55${reservaSelecionada.phone.replace(/\D/g, '')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2.5 rounded-lg font-medium transition-colors"
+              >
+                Chamar no WhatsApp
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
