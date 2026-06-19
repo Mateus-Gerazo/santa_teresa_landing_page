@@ -14,6 +14,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://restaurantesantateresa.com.br"),
   title: {
     template: "%s | Restaurante Santa Teresa",
     default: "Restaurante Santa Teresa | Gastronomia & Charme em Brotas - SP",
@@ -23,13 +24,13 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    url: "https://restaurantesantateresabrotas.com.br",
+    url: "https://restaurantesantateresa.com.br",
     siteName: "Restaurante Santa Teresa",
     title: "Restaurante Santa Teresa | Gastronomia & Charme em Brotas",
     description: "Descubra a melhor gastronomia de Brotas no Restaurante Santa Teresa. Ambiente acolhedor e pratos exclusivos.",
     images: [
       {
-        url: "/og-image.jpg", // Substitua por uma imagem real do restaurante depois
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Interior do Restaurante Santa Teresa",
